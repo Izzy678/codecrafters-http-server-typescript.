@@ -10,6 +10,10 @@ const server = net.createServer((socket) => {
     let response = "";
     console.log("path",path)
     console.log("random",randomStringPath)
+    if (path ==`${path}`) {
+      const newRandomStringPath = path.split('/')[1]
+      response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${newRandomStringPath.length}\r\n\r\n${newRandomStringPath}`;
+    }
     if (path ==`/echo/${randomStringPath}`) {
       response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${randomStringPath.length}\r\n\r\n${randomStringPath}`;
     }
