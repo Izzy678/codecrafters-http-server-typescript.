@@ -6,12 +6,11 @@ console.log("Logs from your program will appear here!");
 const server = net.createServer((socket) => {
   socket.on("data", (data) => {
     const path = data.toString().split(" ")[1];
-    const randomStringPath = path.split("/")[2];
-    console.log("PATH",path)
+   // const randomStringPath = path.split("/")[2];
     let response = "";
 
-    if (path == `/echo/${randomStringPath}`) {
-      response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${randomStringPath.length}\r\n\r\n${randomStringPath}`;
+    if (path == `${path}`) {
+      response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${path.length}\r\n\r\n${path}`;
     }
     if (path == "/") {
       response = `HTTP/1.1 200 OK\r\n\r\n`;
