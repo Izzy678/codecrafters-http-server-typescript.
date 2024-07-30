@@ -10,11 +10,11 @@ const server = net.createServer((socket) => {
     let response = "";
     console.log("path",path)
     console.log("random",randomStringPath)
-    if (path ==`${path}`) {
-      const newRandomStringPath = path.split('/')[1];
-      console.log("this should run")
-      response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${newRandomStringPath.length}\r\n\r\n${newRandomStringPath}`;
-    }
+    // if (path ==`${path}`) {
+    //   const newRandomStringPath = path.split('/')[1];
+    //   console.log("this should run")
+    //   response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${newRandomStringPath.length}\r\n\r\n${newRandomStringPath}`;
+    // }
     if (path ==`/echo/${randomStringPath}`) {
       console.log("this shuld work")
       response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${randomStringPath.length}\r\n\r\n${randomStringPath}`;
@@ -22,7 +22,8 @@ const server = net.createServer((socket) => {
     if (path == "/") {
       response = `HTTP/1.1 200 OK\r\n\r\n`;
     }
-    if (path == "/abcdefg") {
+    if(response=="") {
+      console.log('test')
       response = `HTTP/1.1 404 Not Found\r\n\r\n`;
     }
 
