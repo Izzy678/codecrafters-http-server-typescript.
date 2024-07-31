@@ -55,7 +55,7 @@ const server = net.createServer((socket) => {
     if (path == `/echo/${randomStringPath}`) {
       console.log("request line",requestLines)
       const encodingType = requestLines[2].split(": ")[1];
-      const acceptedEncoding = encodingType.split(',').map(e => e.trim());
+      const acceptedEncoding =encodingType ? encodingType.split(',').map(e => e.trim()) : [];
       console.log("test",acceptedEncoding)
       if(acceptedEncoding.length>0){
         console.log("0")
