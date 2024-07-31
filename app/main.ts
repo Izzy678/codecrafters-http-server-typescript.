@@ -22,7 +22,7 @@ const server = net.createServer((socket) => {
     const randomStringPath = path.split("/")[2];
     let response = "";
     const newpath = filePath.join(__dirname, "../");
-    if (specialFilePath[1] == "files" && process.argv[3]) {
+    if (specialFilePath[1] == "files") {
     
       console.log("process Arg",process.argv)
       const fileDirectory = process.argv[3];
@@ -40,24 +40,30 @@ const server = net.createServer((socket) => {
       const createdFilePath = filePath.join(directory, filename);
       if(method=="POST") {
         //create file
-        const fileName = specialFilePath;
-        const fileContent = 
+        console.log("run")
+        const fileName = specialFilePath[1];
+        const fileContent = requestLines[4];
+        fs.writeFileSync(fileName,fileContent)
+        console.log("file content",fileContent)
         response ="HTTP/1.1 201 Created\r\n\r\n"
       }
-      try {
-        // Read the file synchronously
-        const data = fs.readFileSync(createdFilePath);
-        // Get file stats
-        const stats = fs.statSync(createdFilePath);
-
-        // Get file size (content length)
-        const fileSize = stats.size;
-        response = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${fileSize}\r\n\r\n${data}`;
-        console.log("File content:", data.toString());
-      } catch (err) {
-        response = `HTTP/1.1 404 Not Found\r\n\r\n`;
-        console.error("Error reading the file:", err);
+      else{
+        try {
+          // Read the file synchronously
+          const data = fs.readFileSync(createdFilePath);
+          // Get file stats
+          const stats = fs.statSync(createdFilePath);
+  
+          // Get file size (content length)
+          const fileSize = stats.size;
+          response = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${fileSize}\r\n\r\n${data}`;
+          console.log("File content:", data.toString());
+        } catch (err) {
+          response = `HTTP/1.1 404 Not Found\r\n\r\n`;
+          console.error("Error reading the file:", err);
+        }
       }
+     
     }
 
     if (path == `/echo/${randomStringPath}`) {
