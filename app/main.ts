@@ -24,7 +24,7 @@ const server = net.createServer((socket) => {
       const directoryPath = filePath.join("./", fileDirectory);
       //check if dir exis
       if (!fs.existsSync(fileDirectory)) {
-        fs.mkdirSync(directoryPath); 
+        fs.mkdirSync(directoryPath);
       }
       const directory = `/${directoryPath}/`;
       const filename = specialFilePath[2];
@@ -33,7 +33,7 @@ const server = net.createServer((socket) => {
         //create file
         const fileName = specialFilePath[2];
         const fileContent = requestLines[5];
-        const newFilePath = filePath.join(fileDirectory,fileName);
+        const newFilePath = filePath.join(fileDirectory, fileName);
         fs.writeFileSync(newFilePath, fileContent);
         response = "HTTP/1.1 201 Created\r\n\r\n";
       } else {
@@ -53,22 +53,20 @@ const server = net.createServer((socket) => {
     }
 
     if (path == `/echo/${randomStringPath}`) {
-      const encodingType = requestLines[2].split(": ")[1]
-      if(encodingType){
-        if(encodingType=="gzip"){
-          console.log("1")
+      console.log("request line",requestLines)
+      const encodingType = requestLines[2].split(": ")[1];
+      if (encodingType) {
+        if (encodingType == "gzip") {
           response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding:${encodingType}\r\n\r\n`;
         }
-        if (encodingType!="gzip"){
-          console.log("2")
-          response  = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n`
+        if (encodingType != "gzip") {
+          response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n`;
         }
-      }else{
-        console.log("3")
+      } else {
         response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${randomStringPath.length}\r\n\r\n${randomStringPath}`;
       }
-      }
-      
+    }
+
     if (path == `/user-agent`) {
       response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:${userAgent.length}\r\n\r\n${userAgent}`;
       // response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`;
