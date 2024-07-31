@@ -27,7 +27,7 @@ const server = net.createServer((socket) => {
       const fileDirectory = process.argv[3];
       console.log("file driectory", fileDirectory);
       const directoryPath = filePath.join("./", fileDirectory);
-      //check if dir exist
+      //check if dir exis
       if (!fs.existsSync(fileDirectory)) {
         console.log("run");
         fs.mkdirSync(directoryPath); 
