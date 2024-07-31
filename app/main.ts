@@ -56,7 +56,7 @@ const server = net.createServer((socket) => {
       const encodingType = requestLines[2].split(": ")[1]
       if(encodingType){
         if(encodingType=="gzip"){
-          response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n Content-Encoding:${encodingType}`;
+          response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n Content-Encoding:${encodingType}\r\n\r\n`;
         }
         if (encodingType!="gzip"){
           response  = `HTTP/1.1 200 OK\r\nContent-Type: text/plain`
