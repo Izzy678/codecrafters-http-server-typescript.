@@ -28,7 +28,7 @@ const server = net.createServer((socket) => {
         fs.mkdirSync(directoryPath);
         console.log("end");
       }
-      const directory = "./tmp/";
+      const directory = "/tmp/";
       const filename = specialFilePath[2];
       const createdFilePath = filePath.join(directory, filename);
 
