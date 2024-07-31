@@ -1,5 +1,6 @@
 import * as net from "net";
 import fs from "fs";
+import zlib from "zlib";
 import filePath from "path";
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -53,27 +54,41 @@ const server = net.createServer((socket) => {
     }
 
     if (path == `/echo/${randomStringPath}`) {
-      console.log("request line",requestLines)
+      console.log("request line", requestLines);
       const encodingType = requestLines[2].split(": ")[1];
-      const acceptedEncoding =encodingType ? encodingType.split(',').map(e => e.trim()) : [];
-      console.log("test",acceptedEncoding)
-      if(acceptedEncoding.length>0){
-        console.log("0")
-       if(acceptedEncoding.includes("gzip")){
-        console.log("1")
-         response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip\r\n\r\n`;
-       }else{
-        console.log("3")
-        response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n`;
-       }
-      }
-      else if (encodingType) {
-        console.log("4")
+      const acceptedEncoding = encodingType
+        ? encodingType.split(",").map((e) => e.trim())
+        : [];
+      console.log("test", acceptedEncoding);
+      if (acceptedEncoding.length > 0) {
+        console.log("0");
+        if (acceptedEncoding.includes("gzip")) {
+          console.log("1");
+          response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip\r\n\r\n`;
+        } else {
+          console.log("3");
+          response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n`;
+        }
+      } else if (encodingType) {
+        console.log("4");
         if (encodingType == "gzip") {
+          // Compress the buffer using gzip
+          zlib.gzip(randomStringPath, (err, compressedBuffer) => {
+            if (err) {
+              console.error("An error occurred during compression:", err);
+            } else {
+              // Convert the compressed buffer to a hexadecimal string
+              const hexString = compressedBuffer.toString("hex");
+              console.log(
+                "Hexadecimal representation of the compressed data:",
+                hexString
+              );
+            }
+          });
           response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding:${encodingType}\r\n\r\n`;
         }
         if (encodingType != "gzip") {
-          console.log("5")
+          console.log("5");
           response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n`;
         }
       } else {
@@ -93,7 +108,7 @@ const server = net.createServer((socket) => {
     if (response == "") {
       response = `HTTP/1.1 404 Not Found\r\n\r\n`;
     }
-    console.log("response",response)
+    console.log("response", response);
     socket.write(response);
     socket.end();
   });
