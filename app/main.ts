@@ -30,7 +30,7 @@ const server = net.createServer((socket) => {
       //check if dir exist
       if (!fs.existsSync(fileDirectory)) {
         console.log("run");
-        fs.mkdirSync(directoryPath);
+        fs.mkdirSync(directoryPath); 
         console.log("directoryPath", directoryPath);
         console.log("end");
       }
@@ -41,9 +41,9 @@ const server = net.createServer((socket) => {
         //create file
         console.log("run");
         const fileName = specialFilePath[1];
-        const fileContent = requestLines[4];
-        const newFilePath = filePath.join(createdFilePath, fileName);
-        fs.writeFileSync(newFilePath, fileContent);
+        const fileContent = requestLines[4];4
+        const newFilePath = filePath.join(createdFilePath,fileName);
+        fs.writeFileSync(fileDirectory, fileContent);
         console.log("file content", fileContent);
         response = "HTTP/1.1 201 Created\r\n\r\n";
       } else {
