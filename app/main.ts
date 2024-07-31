@@ -41,7 +41,7 @@ const server = net.createServer((socket) => {
         //create file
         console.log("run");
         console.log("specialFilePath",specialFilePath)
-        const fileName = specialFilePath[1];
+        const fileName = specialFilePath[2];
         const fileContent = requestLines[4];
         const newFilePath = filePath.join(fileDirectory,fileName);
         fs.writeFileSync(newFilePath, fileContent);
