@@ -53,7 +53,7 @@ const server = net.createServer((socket) => {
     }
 
     if (path == `/echo/${randomStringPath}`) {
-      console.log("request line",requestLine)
+      console.log("request line",requestLines)
       if(requestLine){
 
       }
