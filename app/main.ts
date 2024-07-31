@@ -42,8 +42,8 @@ const server = net.createServer((socket) => {
         console.log("run");
         const fileName = specialFilePath[1];
         const fileContent = requestLines[4];4
-        const newFilePath = filePath.join(createdFilePath,fileName);
-        fs.writeFileSync(fileDirectory, fileContent);
+        const newFilePath = filePath.join(fileDirectory,fileName);
+        fs.writeFileSync(newFilePath, fileContent);
         console.log("file content", fileContent);
         response = "HTTP/1.1 201 Created\r\n\r\n";
       } else {
