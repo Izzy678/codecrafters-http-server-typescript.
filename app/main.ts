@@ -7,10 +7,9 @@ const server = net.createServer((socket) => {
   socket.on("data", (data) => {
     const requestString = data.toString();
     const requestLines = requestString.split('\r\n');
-    console.log("request line",requestLines)
     const requestLine = requestLines[0];
     const path = data.toString().split(" ")[1];
-    const userAgent = requestLines[3].split("UserAgent: ")[1]
+    const userAgent = requestLines[2].split("UserAgent: ")[1]
   
     const randomStringPath = path.split("/")[2];
     let response = "";
