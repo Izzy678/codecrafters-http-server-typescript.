@@ -21,6 +21,7 @@ const server = net.createServer((socket) => {
     let response = "";
     const newpath = filePath.join(__dirname, "../");
     if (specialFilePath[1] == "files") {
+      console.log("process Arg",process.argv)
       const fileDirectory = process.argv[2];
       console.log("file driectory",fileDirectory)
       const directoryPath = filePath.join("./", fileDirectory);
