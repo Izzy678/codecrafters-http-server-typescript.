@@ -55,6 +55,8 @@ const server = net.createServer((socket) => {
     if (path == `/echo/${randomStringPath}`) {
       console.log("request line",requestLines)
       const encodingType = requestLines[2].split(": ")[1];
+      console.log("encoding type",encodingType);
+      console.log("splitted encoding type",encodingType.split(': '))
       if (encodingType) {
         if (encodingType == "gzip") {
           response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding:${encodingType}\r\n\r\n`;
