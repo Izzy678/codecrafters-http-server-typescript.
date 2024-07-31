@@ -5,7 +5,7 @@ console.log("Logs from your program will appear here!");
 //Uncomment this to pass the first stage
 const server = net.createServer((socket) => {
   socket.on("data", (data) => {
-    console.log("data",data)
+    console.log("data",data.toString())
     const requestString = data.toString();
     const requestLines = requestString.split('\r\n');
     const requestLine = requestLines[0];
