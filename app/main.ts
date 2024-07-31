@@ -54,13 +54,18 @@ const server = net.createServer((socket) => {
 
     if (path == `/echo/${randomStringPath}`) {
       const encodingType = requestLines[2].split(": ")[1]
-      if(encodingType=="gzip"){
-        console.log("encoding type:",encodingType)
+      if(encodingType){
+        if(encodingType=="gzip"){
+          response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding:${encodingType}`;
+        }
+        if (encodingType!="gzip"){
+          response  = `HTTP/1.1 200 OK\r\nContent-Type: text/plain`
+        }
+      }else{
+        response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${randomStringPath.length}\r\n\r\n${randomStringPath}`;
+      }
       }
       
-      response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${randomStringPath.length}\r\n\r\n${randomStringPath}`;
-    }
-
     if (path == `/user-agent`) {
       response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:${userAgent.length}\r\n\r\n${userAgent}`;
       // response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`;
