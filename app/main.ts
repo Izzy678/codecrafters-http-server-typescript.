@@ -64,7 +64,7 @@ const server = net.createServer((socket) => {
          response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip\r\n\r\n`;
        }else{
         console.log("3")
-        response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\n\n`;
+        response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n`;
        }
       }
       else if (encodingType) {
