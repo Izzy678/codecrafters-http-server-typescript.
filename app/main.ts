@@ -18,7 +18,8 @@ const server = net.createServer((socket) => {
     }
     if (path ==`/user-agent`) {
       console.log("userAgent",userAgent)
-      response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`;
+      response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:${userAgent.length}\r\n\r\n${userAgent}`
+     // response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`;
     }
     if (path == "/") {
       response = `HTTP/1.1 200 OK\r\n\r\n`;
