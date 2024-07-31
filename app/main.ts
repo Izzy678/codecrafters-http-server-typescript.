@@ -9,6 +9,8 @@ const server = net.createServer((socket) => {
   socket.on("data", (data) => {
     const requestString = data.toString();
     const requestLines = requestString.split("\r\n");
+    const method = requestLines[0].split(" ")[0]
+    console.log("method",method);
     console.log("REQUEST LINES", requestLines);
     const requestLine = requestLines[0];
 
@@ -20,7 +22,8 @@ const server = net.createServer((socket) => {
     const randomStringPath = path.split("/")[2];
     let response = "";
     const newpath = filePath.join(__dirname, "../");
-    if (specialFilePath[1] == "files") {
+    if (specialFilePath[1] == "files" && process.argv[3]) {
+    
       console.log("process Arg",process.argv)
       const fileDirectory = process.argv[3];
       console.log("file driectory",fileDirectory)
@@ -35,7 +38,12 @@ const server = net.createServer((socket) => {
       const directory = `/${directoryPath}/`
       const filename = specialFilePath[2];
       const createdFilePath = filePath.join(directory, filename);
-
+      if(method=="POST") {
+        //create file
+        const fileName = specialFilePath;
+        const fileContent = 
+        response ="HTTP/1.1 201 Created\r\n\r\n"
+      }
       try {
         // Read the file synchronously
         const data = fs.readFileSync(createdFilePath);
