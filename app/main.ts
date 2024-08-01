@@ -89,6 +89,7 @@ const server = net.createServer((socket) => {
           );
           console.log("here", hexString);
           response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${hexString.length}\r\nContent-Encoding:${encodingType}\r\n\r\n${hexString}`;
+          socket.write(hexString)
           //response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding:${encodingType}\r\n\r\n`;
         } else if (encodingType != "gzip") {
           console.log("5");
