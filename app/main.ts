@@ -1,13 +1,16 @@
 import * as net from "net";
 import fs from "fs";
-import zlib from "zlib";
+import * as zlib from 'zlib';
+import { promisify } from 'util';
 import filePath from "path";
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
 console.log("Logs from your program will appear here!");
+// Convert zlib.gzip into a promise-based function
+const gzip = promisify(zlib.gzip);
 //Uncomment this to pass the first stage
 const server = net.createServer((socket) => {
-  socket.on("data", (data) => {
+  socket.on("data", async (data) => {
     const requestString = data.toString();
     const requestLines = requestString.split("\r\n");
     const method = requestLines[0].split(" ")[0];
@@ -56,11 +59,12 @@ const server = net.createServer((socket) => {
     if (path == `/echo/${randomStringPath}`) {
       console.log("request line", requestLines);
       const encodingType = requestLines[2].split(": ")[1];
+      console.log("econding type", encodingType);
       const acceptedEncoding = encodingType
         ? encodingType.split(",").map((e) => e.trim())
         : [];
       console.log("test", acceptedEncoding);
-      if (acceptedEncoding.length > 0) {
+      if (acceptedEncoding.length > 1) {
         console.log("0");
         if (acceptedEncoding.includes("gzip")) {
           console.log("1");
@@ -71,27 +75,27 @@ const server = net.createServer((socket) => {
         }
       } else if (encodingType) {
         console.log("4");
+        let hexString = "";
         if (encodingType == "gzip") {
           // Compress the buffer using gzip
-          zlib.gzip(randomStringPath, (err, compressedBuffer) => {
-            if (err) {
-              console.error("An error occurred during compression:", err);
-            } else {
-              // Convert the compressed buffer to a hexadecimal string
-              const hexString = compressedBuffer.toString("hex");
-              console.log(
-                "Hexadecimal representation of the compressed data:",
-                hexString
-              );
-            }
-          });
-          response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding:${encodingType}\r\n\r\n`;
-        }
-        if (encodingType != "gzip") {
+          // Compress the buffer using gzip and await the result
+          const compressedBuffer = await gzip(randomStringPath);
+          // Convert the compressed buffer to a hexadecimal string
+          const hexString = compressedBuffer.toString("hex");
+          console.log("hexstring", hexString.length);
+          console.log(
+            "Hexadecimal representation of the compressed data:",
+            hexString
+          );
+          console.log("here", hexString);
+          response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${hexString.length}\r\nContent-Encoding:${encodingType}\r\n\r\n${hexString}`;
+          //response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding:${encodingType}\r\n\r\n`;
+        } else if (encodingType != "gzip") {
           console.log("5");
           response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n`;
         }
       } else {
+        console.log("6");
         response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${randomStringPath.length}\r\n\r\n${randomStringPath}`;
       }
     }
