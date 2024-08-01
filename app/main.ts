@@ -1,7 +1,7 @@
 import * as net from "net";
 import fs from "fs";
-import * as zlib from 'zlib';
-import { promisify } from 'util';
+import * as zlib from "zlib";
+import { promisify } from "util";
 import filePath from "path";
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -79,18 +79,21 @@ const server = net.createServer((socket) => {
         if (encodingType == "gzip") {
           // Compress the buffer using gzip
           // Compress the buffer using gzip and await the result
-          const compressedBuffer = await gzip(randomStringPath);
+          const buffer = Buffer.from(randomStringPath, 'utf8');
+          const zipped = zlib.gzipSync(buffer);
           // Convert the compressed buffer to a hexadecimal string
-          const hexString = compressedBuffer.toString("hex");
+         
           console.log("hexstring", hexString.length);
           console.log(
             "Hexadecimal representation of the compressed data:",
             hexString
           );
           console.log("here", hexString);
-          response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${hexString.length}\r\nContent-Encoding: ${encodingType}\r\n\r\n${hexString}
+          response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${hexString.length}\r\nContent-Encoding: ${encodingType}`
+          socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip\r\nContent-Length: ${zipped.length}\r\n\r\n`);
+          socket.write(zipped);
+          socket.end();
 
-`;
           //response = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding:${encodingType}\r\n\r\n`;
         } else if (encodingType != "gzip") {
           console.log("5");
